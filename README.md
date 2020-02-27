@@ -14,13 +14,14 @@ docker run -it  -v /var/run/docker.sock:/var/run/docker.sock -v $(PWD):/src dani
 
 Using the TeamCity [Docker Wrapper](https://confluence.jetbrains.com/display/TCD10/Docker%20Wrapper) it is easy to configure a [Command Line](https://confluence.jetbrains.com/display/TCD10/Command+Line) build runner.
 
-Use the following container in the *Run step within Docker container* field
+Use the following container in the _Run step within Docker container_ field
 
 ```docker
 danielmunchcko/dotnet-mono-aws:2.0.6-sdk-2.1.101-mono-5.10.0.160-aws-1.14.56
 ```
 
-Make sure to supply the following *Additional docker run arguments*:
+Make sure to supply the following _Additional docker run arguments_:
+
 ```bash
 -v /var/run/docker.sock:/var/run/docker.sock -v /home/ckouser/.aws:/root/.aws -v /home/ckouser/.nuget:/root/.nuget
 ```
@@ -29,32 +30,22 @@ These arguments enable the following (in order of their appearance):
 
 - Map the docker socket into the container, enabling us to build docker images inside a running container
 
-  See this article for further reading. http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/ 
+  See this article for further reading. http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/
 
-  We're using the approach mentioned in *Solution* at the end of the article, the docker cli client binary not being mapped but installed in the image.
+  We're using the approach mentioned in _Solution_ at the end of the article, the docker cli client binary not being mapped but installed in the image.
+
 - Map the .aws credentials directory, so that we are able to authorize and push to ECR
 - Map the .nuget folder, to speed up nuget download and use the common cache of packages
 
 ![teamcity-build-step-command-line-config](doc/teamcity-build-step-command-line-config.png)
 
-
 ## Versions
 
 The following versions are currently available on Docker hub.
 
-- stefanogajoncko/dotnet-mono-aws:2.2.100-mono-6.4.0-aws-1.16.286
-- danielmunchcko/dotnet-mono-aws:2.0.5-sdk-2.1.4-mono-5.4.1.7-aws-1.14.32
-- danielmunchcko/dotnet-mono-aws:2.0.6-sdk-2.1.101-mono-5.10.0.160-aws-1.14.56
-- danielmunchcko/dotnet-mono-aws:2.1.300-rc1-mono-5.12.0.226-aws-1.15.21 - DO NOT USE, issue with GitVersion
-- danielmunchcko/dotnet-mono-aws:2.1.300-rc1-mono-5.12.0.226-aws-1.15.26
-- danielmunchcko/dotnet-mono-aws:2.1.302-mono-5.12.0.301-aws-1.15.65
+- alexhyettcko/dotnet-mono-aws:2.2.100-mono-6.4.0-aws-1.16.286
 
 Additionally there are those images available:
-- stefanogajoncko/dotnet:2.2.100: Based straight on microsoft/dotnet:2.2.100-sdk-stretch, with additional dependencies for GitVersion and docker cli
-- danielmunchcko/dotnet:2.2.100: Based straight on microsoft/dotnet:2.2.100-sdk-stretch, with additional dependencies for GitVersion and docker cli
-- danielmunchcko/dotnet:2.2.100-node-10.15.0: Same as above, with node 10.15.0
-- danielmunchcko/dotnet:2.1.302: Based straight on microsoft/dotnet:2.1.302-sdk-stretch, with additional dependencies for GitVersion
-- danielmunchcko/dotnet:2.1.402: Based straight on microsoft/dotnet:2.1.402-sdk-stretch, with additional dependencies for GitVersion and docker cli
-- danielmunchcko/dotnet:2.1.302-node-10.7.0: Same as above, with node 10.7.0
-- danielmunchcko/dotnet:2.1.402-aws-1.16.47: Same as above, with aws cli tools 1.16.47
-Use Git history to find their corresponding `Dockerfile` source.
+
+- alexhyettcko/dotnet:2.2.100: Based straight on microsoft/dotnet:2.2.100-sdk-stretch, with additional dependencies for GitVersion and docker cli
+  Use Git history to find their corresponding `Dockerfile` source.
